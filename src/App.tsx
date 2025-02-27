@@ -1,12 +1,22 @@
 import './App.css'
-import HomeScreen from './screens/HomeScreen/HomeScreen'
+import { ThemeProvider } from './components/theme-provider';
+import Provider from './context/Provider';
+import Layout from './layout'
+import AppRoutes from './Routes';
 
-function App() {
+interface Props {
+}
+
+function App(Props: Props) {
 
     return (
-        <>
-            <HomeScreen />
-        </>
+        <ThemeProvider defaultTheme="dark" storageKey="theme">
+            <Provider>
+                <Layout>
+                    <AppRoutes />
+                </Layout>
+            </Provider>
+        </ThemeProvider >
     )
 }
 

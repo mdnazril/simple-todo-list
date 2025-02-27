@@ -25,7 +25,7 @@ const Header = (props: Props) => {
                         placeholder="Enter a task..."
                     />
                     <button
-                        className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition'
+                        className='bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 transition'
                         onClick={(e) => addTask(e)}
                     >
                         Add Task

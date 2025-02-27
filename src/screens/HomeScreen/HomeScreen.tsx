@@ -1,11 +1,12 @@
+import Header from '@/components/Header'
+import Table from '@/components/Table'
 import React, { useState } from 'react'
-import styles from "./HomeScreen.module.css";
 
 type Props = {
     [key: string]: any,
 }
 
-type task = {
+export type task = {
     task: string,
     complete: boolean
 }
@@ -13,6 +14,7 @@ type task = {
 const HomeScreen = (props: Props) => {
 
     const [tasks, setTasks] = useState<task[]>([]);
+    const [completedTasks, setCompletedTasks] = useState<task[]>([]);
     const [newTask, setNewTask] = useState<string>("");
 
     const addTask = (e: any) => {
@@ -32,7 +34,7 @@ const HomeScreen = (props: Props) => {
 
     };
 
-    const deleteTask = (index: number) => {
+    const removeTask = (index: number) => {
 
         const filteredTask = tasks.filter((task, i) => i !== index);
 
@@ -40,47 +42,42 @@ const HomeScreen = (props: Props) => {
 
     };
 
-    const completeTask = (index: number) => {
+    const completeTask = (index: number, isCompleted: boolean) => {
 
-        const updateTask = tasks.map((task, i) =>
+        if (isCompleted) {
+            const taskToMove = completedTasks[index];
 
-            i === index ? { ...task, complete: !task.complete } : task
-        );
+            if (!taskToMove) return;
 
-        setTasks(updateTask);
+            const updatedTask = { ...taskToMove, complete: false };
+
+            setCompletedTasks(prev => prev.filter((_, i) => i !== index));
+            setTasks(prev => [...prev, updatedTask]);
+        } else {
+            const taskToMove = tasks[index];
+
+            if (!taskToMove) return;
+
+            const updatedTask = { ...taskToMove, complete: true };
+
+            setTasks(prev => prev.filter((_, i) => i !== index));
+            setCompletedTasks(prev => [...prev, updatedTask]);
+        }
     };
 
     return (
-        <div className='bg-slate-100 text-black px-4 pb-4 rounded-lg w-full sm:w-[90vw] md:w-[70vw] lg:w-[50vw] max-w-[400px] min-h-[30vh] sm:min-h-[40vh] md:min-h-[50vh] mx-auto'>
+        <div className='flex flex-1 flex-col justify-center items-center w-full h-full relative'>
+            <Header addTask={addTask} newTask={newTask} setNewTask={setNewTask} />
 
-            <h1 className='text-start py-3'>Todo App</h1>
+            {tasks &&
+                <Table list={tasks} heading="To Do" removeTask={removeTask} completeTask={completeTask} />
+            }
 
-            <form className='flex gap-2'>
-                <input
-                    type="text"
-                    className='bg-white flex-1 rounded-md'
-                    value={newTask}
-                    onChange={(e) => { setNewTask(e.target.value) }}
-                />
-                <button className='bg-blue-500 text-white' onClick={addTask}>Add</button>
-            </form>
-
-            <div className='flex flex-col gap-3 mt-3'>
-                {tasks?.map((task, index) => (
-                    <div key={index} className="bg-slate-200 rounded-md flex items-center justify-between">
-                        <p className={`px-2 ${task.complete ? "line-through text-gray-500" : ""}`}>
-                            {task.task}
-                        </p>
-
-                        <div className='flex gap-2'>
-                            <button className='bg-green-500 text-white' onClick={() => completeTask(index)}>done</button>
-                            <button className='bg-red-500 text-white' onClick={() => deleteTask(index)}>x</button>
-                        </div>
-
-                    </div>
-                ))}
-            </div>
-
+            {completedTasks &&
+                <div className='pt-2 w-full'>
+                    <Table list={completedTasks} heading="Done" removeTask={removeTask} completeTask={completeTask} />
+                </div>
+            }
         </div>
     )
 }

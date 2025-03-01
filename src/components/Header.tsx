@@ -1,5 +1,7 @@
 import React from 'react'
 import logo from "@/assets/logo.png";
+import { motion } from "framer-motion";
+import { fadeInFromTop } from './AnimationVariant';
 
 type Props = {
     addTask: (e: any) => void,
@@ -10,9 +12,19 @@ type Props = {
 const Header = (props: Props) => {
     const { addTask, newTask, setNewTask } = props;
 
+
+
     return (
-        <div className='bg-secondary w-full flex flex-1 justify-center p-4'>
-            <div className='flex flex-1 flex-col justify-center sm:flex-row items-center w-full max-w-[1440px] gap-4'>
+        <motion.div
+            variants={fadeInFromTop}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className='bg-secondary w-full flex flex-1 justify-center p-4'>
+
+            <div
+                className='flex flex-1 flex-col justify-center sm:flex-row items-center w-full max-w-[1440px] gap-4'
+            >
 
                 <img src={logo} alt='logo' className='w-16 sm:w-20' />
 
@@ -33,7 +45,7 @@ const Header = (props: Props) => {
                 </form>
 
             </div>
-        </div>
+        </motion.div>
     )
 }
 

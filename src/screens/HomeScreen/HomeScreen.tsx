@@ -1,3 +1,4 @@
+import { fadeInFromLeft, fadeInFromRight } from '@/components/AnimationVariant'
 import Header from '@/components/Header'
 import Table from '@/components/Table'
 import React, { useState } from 'react'
@@ -70,12 +71,12 @@ const HomeScreen = (props: Props) => {
             <Header addTask={addTask} newTask={newTask} setNewTask={setNewTask} />
 
             {tasks &&
-                <Table list={tasks} heading="To Do" removeTask={removeTask} completeTask={completeTask} />
+                <Table list={tasks} heading="To Do" removeTask={removeTask} completeTask={completeTask} animation={fadeInFromLeft} />
             }
 
             {completedTasks &&
                 <div className='pt-2 w-full'>
-                    <Table list={completedTasks} heading="Done" removeTask={removeTask} completeTask={completeTask} />
+                    <Table list={completedTasks} heading="Done" removeTask={removeTask} completeTask={completeTask} animation={fadeInFromRight} />
                 </div>
             }
         </div>

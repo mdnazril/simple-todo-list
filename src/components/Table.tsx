@@ -51,7 +51,7 @@ const Table = (props: Props) => {
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.5 }}
                         className="flex items-center justify-between py-1 w-full"
                     >
                         <div className='flex items-center flex-1 overflow-hidden'>

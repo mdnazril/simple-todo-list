@@ -35,35 +35,23 @@ const HomeScreen = (props: Props) => {
 
     };
 
-    const removeTask = (index: number) => {
+    const removeTask = (index: number, isCompleted: boolean) => {
+        const setTasksList = isCompleted ? setCompletedTasks : setTasks;
 
-        const filteredTask = tasks.filter((task, i) => i !== index);
-
-        setTasks(filteredTask);
-
+        setTasksList(prev => prev.filter((_, i) => i !== index));
     };
 
     const completeTask = (index: number, isCompleted: boolean) => {
+        const [sourceTasks, setSourceTasks] = isCompleted ? [completedTasks, setCompletedTasks] : [tasks, setTasks];
+        const [targetTasks, setTargetTasks] = isCompleted ? [tasks, setTasks] : [completedTasks, setCompletedTasks];
 
-        if (isCompleted) {
-            const taskToMove = completedTasks[index];
+        const taskToMove = sourceTasks[index];
+        if (!taskToMove) return;
 
-            if (!taskToMove) return;
+        const updatedTask = { ...taskToMove, complete: !isCompleted };
 
-            const updatedTask = { ...taskToMove, complete: false };
-
-            setCompletedTasks(prev => prev.filter((_, i) => i !== index));
-            setTasks(prev => [...prev, updatedTask]);
-        } else {
-            const taskToMove = tasks[index];
-
-            if (!taskToMove) return;
-
-            const updatedTask = { ...taskToMove, complete: true };
-
-            setTasks(prev => prev.filter((_, i) => i !== index));
-            setCompletedTasks(prev => [...prev, updatedTask]);
-        }
+        setSourceTasks(prev => prev.filter((_, i) => i !== index));
+        setTargetTasks(prev => [...prev, updatedTask]);
     };
 
     return (
